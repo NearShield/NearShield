@@ -31,7 +31,7 @@ export interface Submission {
   campaign_id: number
   submitter: string
   title: string
-  description_hash: string
+  description: string;
   poc_link: string
   severity_claim: number
   status: 'Pending' | 'UnderReview' | 'Accepted' | 'Rejected' | 'Duplicate' | 'Informative'
