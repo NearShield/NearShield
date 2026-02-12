@@ -33,7 +33,7 @@ pub enum CampaignType {
 #[serde(crate = "near_sdk::serde")]
 pub struct SubmitBugInput {
     pub title: String,
-    pub description_hash: String, // IPFS CID
+    pub description: String,        // was description_hash
     pub poc_link: String,
     pub severity_claim: u8,
 }
