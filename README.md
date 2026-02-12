@@ -20,6 +20,8 @@ NEARShield empowers any NEAR project (dApp, protocol, smart contract) to launch 
   Built with Rust smart contract, Wallet Selector, NEP‑141 token support, and NEAR Intents‑ready architecture.
 · Modern Frontend
   Next.js + TypeScript + Tailwind CSS + shadcn/ui – responsive, dark mode, wallet integration.
+  
+  
   📖 Usage Guide
 
 For Project Owners
