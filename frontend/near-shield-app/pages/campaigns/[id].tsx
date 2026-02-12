@@ -9,7 +9,6 @@ import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Label } from '@/components/ui/label'
 import { toast } from 'sonner'
-import { uploadToIPFS } from '@/lib/ipfs' // we'll create this
 
 export default function CampaignDetail() {
   const { account, signIn } = useWalletContext()
@@ -38,12 +37,12 @@ export default function CampaignDetail() {
     setSubmitting(true)
     try {
       // Upload description to IPFS (optional – you can also store directly as text)
-      const descriptionHash = await uploadToIPFS(description)
+      const descriptionText = description
       await submitBug(account, campaign.id, {
-        title,
-        description_hash: descriptionHash,
+  title,
+  description: descriptionText,
         poc_link: pocLink,
-        severity_claim: severity,
+  severity_claim: severity,
       })
       toast.success('Bug report submitted!')
       setTitle(''); setDescription(''); setPocLink(''); setSeverity(0)
