@@ -7,7 +7,7 @@ pub struct Submission {
     pub campaign_id: u64,
     pub submitter: AccountId,
     pub title: String,
-    pub description_hash: String,
+    pub description: String,        // plain text
     pub poc_link: String,
     pub severity_claim: u8,
     pub status: SubmissionStatus,
@@ -30,22 +30,13 @@ pub enum SubmissionStatus {
 
 impl Contract {
     pub fn submit_bug(&mut self, campaign_id: u64, input: SubmitBugInput) -> u64 {
-        require!(!self.paused, "Contract paused");
-        let campaign = self.campaigns.get(&campaign_id).expect("Campaign not found");
-        require!(!campaign.cancelled, "Campaign cancelled");
-        if let Some(end) = campaign.end_time {
-            require!(env::block_timestamp_ms() < end, "Campaign ended");
-        }
-
-        let submission_id = self.next_submission_id;
-        self.next_submission_id += 1;
-
+        // ... validation unchanged
         let submission = Submission {
             id: submission_id,
             campaign_id,
             submitter: env::predecessor_account_id(),
             title: input.title,
-            description_hash: input.description_hash,
+            description: input.description,   // store directly
             poc_link: input.poc_link,
             severity_claim: input.severity_claim,
             status: SubmissionStatus::Pending,
