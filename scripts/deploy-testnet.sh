@@ -1,21 +1,26 @@
 #!/bin/bash
-# Deploy NEARShield contract to testnet
+# Deploy NEARShield to mainnet using nearshield.near as the contract account
 
-set -e
+export NEAR_NETWORK=mainnet
+CONTRACT_ID="nearshield.near"          # your contract account
+ADMIN="nearshield.near"             # replace with YOUR mainnet admin account
+TREASURY="nearshield-fees.near"           # or create a separate treasury.near
 
-CONTRACT_ID="nearshield.testnet"
-INIT_ARGS='{"admin": "your-account.testnet", "treasury": "nearshield-treasury.testnet"}'
-
-# Build contract
+# Build contract (Rust -> WASM)
 cd contracts/nearshield
 cargo build --target wasm32-unknown-unknown --release
 cd ../..
 
-# Deploy
-near create-account $CONTRACT_ID --masterAccount your-account.testnet --initialBalance 10 || true
-near deploy $CONTRACT_ID --wasmFile contracts/nearshield/target/wasm32-unknown-unknown/release/nearshield.wasm
+# Deploy contract
+near deploy $CONTRACT_ID \
+  --wasmFile contracts/nearshield/target/wasm32-unknown-unknown/release/nearshield.wasm \
+  --networkId mainnet \
+  --accountId $ADMIN
 
-# Initialize
-near call $CONTRACT_ID new "$INIT_ARGS" --accountId your-account.testnet
+# Initialize contract
+INIT_ARGS='{"admin": "'$ADMIN'", "treasury": "'$TREASURY'"}'
+near call $CONTRACT_ID new "$INIT_ARGS" \
+  --accountId $ADMIN \
+  --networkId mainnet
 
-echo "✅ Contract deployed and initialized at $CONTRACT_ID"
+echo "✅ NEARShield deployed to $CONTRACT_ID on mainnet"
